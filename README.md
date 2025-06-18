@@ -38,7 +38,31 @@ docker pull ghcr.io/bhfonseca/docker-swarm-exporter:latest
 docker run -d --name docker-swarm-exporter -p 9323:9323 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/bhfonseca/docker-swarm-exporter:latest
 ```
 
-You can also use specific version tags instead of `latest`.
+You can also use specific version tags instead of `latest`. For example:
+
+```bash
+docker pull ghcr.io/bhfonseca/docker-swarm-exporter:v1.0.0
+```
+
+## Versioning
+
+This project follows [Semantic Versioning](https://semver.org/) (SemVer). Versions are tagged in the format `vX.Y.Z` where:
+
+- `X` is the major version (incompatible API changes)
+- `Y` is the minor version (backwards-compatible functionality)
+- `Z` is the patch version (backwards-compatible bug fixes)
+
+When using the Docker image, you can specify the version in several ways:
+
+- `latest`: Always use the latest version (from the main branch)
+- `vX.Y.Z`: Use a specific version (e.g., `v1.0.0`)
+- `vX.Y`: Use the latest patch version of a specific minor version (e.g., `v1.0`)
+- `vX`: Use the latest minor and patch version of a specific major version (e.g., `v1`)
+
+You can check the version of the running exporter by:
+
+1. Using the `--version` flag when starting the exporter
+2. Looking at the version information on the web interface (http://localhost:9323/)
 
 ## Usage
 
@@ -52,6 +76,7 @@ You can also use specific version tags instead of `latest`.
 - `--web.telemetry-path`: Path under which to expose metrics (default: "/metrics")
 - `--docker.socket`: Docker socket path (default: "unix:///var/run/docker.sock")
 - `--scrape.timeout`: Timeout for scraping Docker metrics (default: 10s)
+- `--version`: Show version information and exit
 
 ## Metrics
 

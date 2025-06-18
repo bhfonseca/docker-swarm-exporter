@@ -3,8 +3,10 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/docker/docker/api/types"
@@ -21,6 +23,7 @@ var (
 	metricsPath   = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	dockerSocket  = flag.String("docker.socket", "unix:///var/run/docker.sock", "Docker socket path.")
 	scrapeTimeout = flag.Duration("scrape.timeout", 10*time.Second, "Timeout for scraping Docker metrics.")
+	showVersion   = flag.Bool("version", false, "Show version information and exit.")
 )
 
 // DockerSwarmCollector implements the prometheus.Collector interface
@@ -373,6 +376,12 @@ func (c *DockerSwarmCollector) collectSwarmMetrics(ctx context.Context, ch chan<
 func main() {
 	flag.Parse()
 
+	// Show version information if requested
+	if *showVersion {
+		fmt.Println(VersionInfo())
+		os.Exit(0)
+	}
+
 	// Create Docker client
 	dockerClient, err := client.NewClientWithOpts(
 		client.WithHost(*dockerSocket),
@@ -405,6 +414,7 @@ func main() {
 			<head><title>Docker Swarm Exporter</title></head>
 			<body>
 			<h1>Docker Swarm Exporter</h1>
+			<p>Version: ` + Version + `</p>
 			<p><a href="` + *metricsPath + `">Metrics</a></p>
 			</body>
 			</html>`))
