@@ -24,10 +24,21 @@ go build
 
 ### Docker
 
+#### Build locally
+
 ```bash
 docker build -t docker-swarm-exporter .
 docker run -d --name docker-swarm-exporter -p 9323:9323 -v /var/run/docker.sock:/var/run/docker.sock docker-swarm-exporter
 ```
+
+#### Use pre-built image from GitHub Container Registry
+
+```bash
+docker pull ghcr.io/bhfonseca/docker-swarm-exporter:latest
+docker run -d --name docker-swarm-exporter -p 9323:9323 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/bhfonseca/docker-swarm-exporter:latest
+```
+
+You can also use specific version tags instead of `latest`.
 
 ## Usage
 
