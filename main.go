@@ -40,6 +40,7 @@ type DockerSwarmCollector struct {
 	nodesActive               *prometheus.Desc
 	stacksCount               *prometheus.Desc
 	containersRunningAllNodes *prometheus.Desc
+	totalContainersAllNodes   *prometheus.Desc
 }
 
 // NewDockerSwarmCollector creates a new DockerSwarmCollector
@@ -103,6 +104,11 @@ func NewDockerSwarmCollector(dockerClient *client.Client, timeout time.Duration)
 			"The number of containers running across all nodes",
 			[]string{"node_id", "node_hostname"}, nil,
 		),
+		totalContainersAllNodes: prometheus.NewDesc(
+			"docker_containers_running_total_all_nodes",
+			"The total number of containers running across all nodes combined",
+			nil, nil,
+		),
 	}
 }
 
@@ -119,6 +125,7 @@ func (c *DockerSwarmCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.nodesActive
 	ch <- c.stacksCount
 	ch <- c.containersRunningAllNodes
+	ch <- c.totalContainersAllNodes
 }
 
 // Collect implements the prometheus.Collector interface
@@ -335,6 +342,19 @@ func (c *DockerSwarmCollector) collectSwarmMetrics(ctx context.Context, ch chan<
 					}
 				}
 			}
+
+			// Calculate total containers across all nodes
+			totalContainers := 0
+			for _, count := range nodeContainers {
+				totalContainers += count
+			}
+
+			// Expose total containers metric
+			ch <- prometheus.MustNewConstMetric(
+				c.totalContainersAllNodes,
+				prometheus.GaugeValue,
+				float64(totalContainers),
+			)
 
 			// Expose metrics for each node
 			for nodeID, count := range nodeContainers {

@@ -57,6 +57,7 @@ The exporter exposes the following metrics:
 - `docker_nodes_active_total`: The number of active nodes
 - `docker_stacks_total`: The number of stacks
 - `docker_containers_running_all_nodes_total`: The number of containers running on each node (labeled by node_id and node_hostname)
+- `docker_containers_running_total_all_nodes`: The total number of containers running across all nodes combined
 
 ## Prometheus Configuration
 
