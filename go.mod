@@ -1,4 +1,4 @@
-module github.com/devops/docker-swarm-exporter
+module github.com/bhfonseca/docker-swarm-exporter
 
 go 1.24.2
 

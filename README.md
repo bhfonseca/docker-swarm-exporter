@@ -17,7 +17,7 @@ This exporter collects the following metrics:
 ### Building from source
 
 ```bash
-git clone https://github.com/devops/docker-swarm-exporter.git
+git clone https://github.com/bhfonseca/docker-swarm-exporter.git
 cd docker-swarm-exporter
 go build
 ```
